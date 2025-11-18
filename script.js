@@ -39,4 +39,11 @@ function renderTable(data) {
         });
         tableBody.appendChild(tr);
     });
+    document.getElementById('searchBox').addEventListener('input', function(e) {
+    const value = e.target.value.toLowerCase();
+    const rows = document.querySelectorAll('#table-body tr');
+    rows.forEach(row => {
+        row.style.display = row.textContent.toLowerCase().includes(value) ? '' : 'none';
+    });
+});
 }
