@@ -1,0 +1,20 @@
+body.bg-dark {
+    background-color: #1e1e1e !important;
+    color: white !important;
+}
+
+.bg-dark table {
+    color: white;
+}
+
+.bg-dark .table-dark {
+    background-color: #333 !important;
+}
+
+.card {
+    border-radius: 8px;
+}
+
+.table {
+    font-size: 14px;
+}
