@@ -14,6 +14,36 @@ Papa.parse(currentCSV, {
         initDashboard();
     }
 });
+document.getElementById("rangeBtn").onclick = function () {
+    let start = new Date(document.getElementById("startDate").value);
+    let end = new Date(document.getElementById("endDate").value);
+
+    let subset = data.filter(r => {
+        let d = new Date(r["DATE"]);
+        return d >= start && d <= end;
+    });
+
+    let count = {};
+    subset.forEach(r => {
+        let key = r["DATE"];
+        count[key] = (count[key] || 0) + 1;
+    });
+
+    if (window.rangeChart) window.rangeChart.destroy();
+
+    window.rangeChart = new Chart(document.getElementById("rangeChart"), {
+        type: "bar",
+        data: {
+            labels: Object.keys(count),
+            datasets: [{
+                label: "Material Count",
+                data: Object.values(count),
+                backgroundColor: "#4e79a7"
+            }]
+        }
+    });
+};
+
 document.getElementById("entryForm").onsubmit = function (e) {
     e.preventDefault();
 
