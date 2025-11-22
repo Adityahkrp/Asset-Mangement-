@@ -1,17 +1,18 @@
 let data = [];
 let statusChart, circleChart;
 
-// Load CSV
+// Load CSV with cleaned data
 Papa.parse("data/assets.csv", {
     download: true,
     header: true,
+    skipEmptyLines: true,
     complete: function(results) {
         data = results.data;
         initDashboard();
     }
 });
 
-// Initialize dashboard
+// INIT
 function initDashboard() {
     fillTable(data);
     fillFilters(data);
@@ -19,57 +20,62 @@ function initDashboard() {
     attachEvents();
 }
 
-// Fill Table
+// -------- TABLE RENDERING --------
 function fillTable(rows) {
     let tbody = document.querySelector("#assetTable tbody");
     tbody.innerHTML = "";
+
     rows.forEach(row => {
+        if (!row["Asset ID"]) return;   // ignore bad rows
+
         let tr = document.createElement("tr");
         tr.innerHTML = `
-            <td>${row["DATE"]}</td>
-            <td>${row["Asset ID"]}</td>
-            <td>${row["Material Type"]}</td>
-            <td>${row["Model/Variant"]}</td>
-            <td>${row["NOS"]}</td>
-            <td>${row["Circle"]}</td>
-            <td>${row["Division"]}</td>
-            <td>${row["Substation"]}</td>
-            <td>${row["Status"]}</td>
-            <td>${row["Assigned To"]}</td>
-            <td>${row["Planned Date"]}</td>
-            <td>${row["Replacement Date"]}</td>
-            <td>${row["Remarks"]}</td>
-            <td>${row["Last Updated By"]}</td>
+            <td>${row["DATE"] || ""}</td>
+            <td>${row["Asset ID"] || ""}</td>
+            <td>${row["Material Type"] || ""}</td>
+            <td>${row["Model/Variant"] || ""}</td>
+            <td>${row["NOS"] || ""}</td>
+            <td>${row["Circle"] || ""}</td>
+            <td>${row["Division"] || ""}</td>
+            <td>${row["Substation"] || ""}</td>
+            <td>${row["Status"] || ""}</td>
+            <td>${row["Assigned To"] || ""}</td>
+            <td>${row["Planned Date"] || ""}</td>
+            <td>${row["Replacement Date"] || ""}</td>
+            <td>${row["Remarks"] || ""}</td>
+            <td>${row["Last Updated By"] || ""}</td>
         `;
         tbody.appendChild(tr);
     });
 }
 
-// Fill filters
-function fillFilters(data) {
-    let circles = [...new Set(data.map(x => x.Circle).filter(x => x))];
-    let circleFilter = document.getElementById("circleFilter");
+// -------- FILTER SETUP --------
+function fillFilters(rows) {
+    let circleSet = new Set(rows.map(r => r.Circle).filter(Boolean));
 
-    circles.forEach(circle => {
+    let circleFilter = document.getElementById("circleFilter");
+    circleSet.forEach(c => {
         let opt = document.createElement("option");
-        opt.textContent = circle;
+        opt.textContent = c;
         circleFilter.appendChild(opt);
     });
 }
 
-// Apply filters
+// -------- FILTER LOGIC --------
 function applyFilters() {
     let status = document.getElementById("statusFilter").value;
     let circle = document.getElementById("circleFilter").value;
     let search = document.getElementById("searchBox").value.toLowerCase();
 
     let filtered = data.filter(row => {
+        if (!row["Asset ID"]) return false;
+
         return (!status || row.Status === status) &&
                (!circle || row.Circle === circle) &&
                (
-                   row["Asset ID"]?.toLowerCase().includes(search) ||
-                   row["Substation"]?.toLowerCase().includes(search) ||
-                   row["Assigned To"]?.toLowerCase().includes(search)
+                   (row["Asset ID"] || "").toLowerCase().includes(search) ||
+                   (row["Substation"] || "").toLowerCase().includes(search) ||
+                   (row["Assigned To"] || "").toLowerCase().includes(search)
                );
     });
 
@@ -77,16 +83,18 @@ function applyFilters() {
     updateCharts(filtered);
 }
 
-// Create Charts
+// -------- CHARTS --------
 function updateCharts(rows) {
-    // Status chart
-    let statusCount = {};
-    rows.forEach(r => statusCount[r.Status] = (statusCount[r.Status] || 0) + 1);
 
-    let ctx1 = document.getElementById("statusChart");
+    // STATUS PIE
+    let statusCount = {};
+    rows.forEach(r => {
+        if (!r.Status) return;
+        statusCount[r.Status] = (statusCount[r.Status] || 0) + 1;
+    });
 
     if (statusChart) statusChart.destroy();
-    statusChart = new Chart(ctx1, {
+    statusChart = new Chart(document.getElementById("statusChart"), {
         type: "pie",
         data: {
             labels: Object.keys(statusCount),
@@ -97,14 +105,15 @@ function updateCharts(rows) {
         }
     });
 
-    // Circle chart
+    // CIRCLE BAR
     let circleCount = {};
-    rows.forEach(r => circleCount[r.Circle] = (circleCount[r.Circle] || 0) + 1);
-
-    let ctx2 = document.getElementById("circleChart");
+    rows.forEach(r => {
+        if (!r.Circle) return;
+        circleCount[r.Circle] = (circleCount[r.Circle] || 0) + 1;
+    });
 
     if (circleChart) circleChart.destroy();
-    circleChart = new Chart(ctx2, {
+    circleChart = new Chart(document.getElementById("circleChart"), {
         type: "bar",
         data: {
             labels: Object.keys(circleCount),
@@ -117,51 +126,53 @@ function updateCharts(rows) {
     });
 }
 
-// Add New Asset
+// -------- ENTRY FORM --------
 document.getElementById("entryForm").onsubmit = function(e) {
     e.preventDefault();
 
     let formData = new FormData(e.target);
-    let newEntry = {};
-    formData.forEach((value, key) => newEntry[key] = value);
+    let entry = {};
 
-    data.push(newEntry);
+    formData.forEach((val, key) => {
+        entry[key] = val.trim();
+    });
+
+    // Save it
+    data.push(entry);
 
     fillTable(data);
     updateCharts(data);
 
     alert("Asset added successfully!");
+    e.target.reset();
 };
 
-// Download updated CSV
+// -------- CSV DOWNLOAD --------
 document.getElementById("downloadCSV").onclick = function() {
-    let csv = Papa.unparse(data);
+    let csvText = Papa.unparse(data);
 
-    let blob = new Blob([csv], { type: "text/csv" });
+    let blob = new Blob([csvText], { type: "text/csv" });
     let url = URL.createObjectURL(blob);
 
     let a = document.createElement("a");
     a.href = url;
     a.download = "updated_assets.csv";
-    document.body.appendChild(a);
     a.click();
-    document.body.removeChild(a);
 };
 
-// Theme Toggle
-document.getElementById("themeToggle").onclick = function() {
+// -------- THEME SWITCH --------
+document.getElementById("themeToggle").onclick = function () {
     let body = document.getElementById("body");
 
-    if (body.classList.contains("bg-dark")) {
-        body.classList.remove("bg-dark", "text-white");
-        this.textContent = "🌙 Dark Mode";
-    } else {
-        body.classList.add("bg-dark", "text-white");
-        this.textContent = "☀️ Light Mode";
-    }
+    body.classList.toggle("bg-dark");
+    body.classList.toggle("text-white");
+
+    this.textContent = body.classList.contains("bg-dark")
+        ? "☀️ Light Mode"
+        : "🌙 Dark Mode";
 };
 
-// Attach filter events
+// -------- EVENT LISTENERS --------
 function attachEvents() {
     document.getElementById("statusFilter").onchange = applyFilters;
     document.getElementById("circleFilter").onchange = applyFilters;
