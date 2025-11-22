@@ -16,10 +16,7 @@
     <!-- Header + Theme Toggle -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>Asset Management Dashboard</h1>
-
-        <button id="themeToggle" class="btn btn-secondary">
-            🌙 Dark Mode
-        </button>
+        <button id="themeToggle" class="btn btn-secondary">🌙 Dark Mode</button>
     </div>
 
     <!-- Filters -->
@@ -65,13 +62,13 @@
                         <input type="date" class="form-control" name="DATE" required>
                     </div>
                     <div class="col-md-3">
-                        <input type="number" class="form-control" name="Asset ID" placeholder="Asset ID" required>
+                        <input type="number" class="form-control" name="Asset_ID" placeholder="Asset ID" required>
                     </div>
                     <div class="col-md-3">
-                        <input type="text" class="form-control" name="Material Type" placeholder="Material Type">
+                        <input type="text" class="form-control" name="Material_Type" placeholder="Material Type">
                     </div>
                     <div class="col-md-3">
-                        <input type="text" class="form-control" name="Model/Variant" placeholder="Model">
+                        <input type="text" class="form-control" name="Model_Variant" placeholder="Model">
                     </div>
                     <div class="col-md-3">
                         <input type="number" class="form-control" name="NOS" placeholder="NOS">
@@ -94,25 +91,30 @@
                         </select>
                     </div>
                     <div class="col-md-3">
-                        <input type="text" class="form-control" name="Assigned To" placeholder="Assigned To">
+                        <input type="text" class="form-control" name="Assigned_To" placeholder="Assigned To">
                     </div>
                     <div class="col-md-3">
-                        <input type="date" class="form-control" name="Planned Date">
+                        <input type="date" class="form-control" name="Planned_Date">
                     </div>
                     <div class="col-md-3">
-                        <input type="date" class="form-control" name="Replacement Date">
+                        <input type="date" class="form-control" name="Replacement_Date">
                     </div>
                     <div class="col-md-6">
                         <input type="text" class="form-control" name="Remarks" placeholder="Remarks">
                     </div>
                     <div class="col-md-6">
-                        <input type="text" class="form-control" name="Last Updated By" placeholder="Updated By">
+                        <input type="text" class="form-control" name="Last_Updated_By" placeholder="Updated By">
                     </div>
                 </div>
 
                 <button class="btn btn-success mt-3" type="submit">Add Asset</button>
                 <button class="btn btn-info mt-3" id="downloadCSV" type="button">Download Updated CSV</button>
             </form>
+
+            <!-- CSV Import -->
+            <div class="mt-3">
+                <input type="file" id="importCSV" accept=".csv" class="form-control">
+            </div>
         </div>
     </div>
 
@@ -140,18 +142,19 @@
             <tbody></tbody>
         </table>
     </div>
-<div class="row mt-4">
-    <div class="col-md-3"><input type="date" id="startDate" class="form-control"></div>
-    <div class="col-md-3"><input type="date" id="endDate" class="form-control"></div>
-    <div class="col-md-3">
-        <button id="rangeBtn" class="btn btn-info">Show Range Chart</button>
+
+    <!-- Date Range Chart -->
+    <div class="row mt-4">
+        <div class="col-md-3"><input type="date" id="startDate" class="form-control"></div>
+        <div class="col-md-3"><input type="date" id="endDate" class="form-control"></div>
+        <div class="col-md-3">
+            <button id="rangeBtn" class="btn btn-info">Show Range Chart</button>
+        </div>
     </div>
-</div>
-
-<canvas id="rangeChart" class="mt-4"></canvas>
+    <canvas id="rangeChart" class="mt-4"></canvas>
 
 </div>
-<input type="file" id="importCSV" accept=".csv" class="form-control my-3">
+
 <script src="assets/script.js"></script>
 </body>
 </html>
