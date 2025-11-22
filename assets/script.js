@@ -1,5 +1,55 @@
 let data = [];
 let statusChart, circleChart;
+let now = new Date();
+let year = now.getFullYear();
+let month = String(now.getMonth() + 1).padStart(2, '0');
+let currentCSV = `data/${year}-${month}.csv`;
+
+Papa.parse(currentCSV, {
+    download: true,
+    header: true,
+    skipEmptyLines: true,
+    complete: function(results) {
+        data = results.data;
+        initDashboard();
+    }
+});
+document.getElementById("entryForm").onsubmit = function (e) {
+    e.preventDefault();
+
+    let form = new FormData(e.target);
+    let entry = {};
+
+    form.forEach((v, k) => entry[k] = v);
+
+    // Push Entry
+    data.push(entry);
+
+    // Save to new month CSV
+    let csv = Papa.unparse(data);
+    let blob = new Blob([csv], { type: "text/csv" });
+    let url = URL.createObjectURL(blob);
+
+    let a = document.createElement("a");
+    a.href = url;
+    a.download = `${year}-${month}.csv`;
+    a.click();
+
+    alert("Entry saved to this month’s file!");
+    fillTable(data);
+    updateCharts(data);
+};
+document.getElementById("importCSV").addEventListener("change", function () {
+    Papa.parse(this.files[0], {
+        header: true,
+        skipEmptyLines: true,
+        complete: function (results) {
+            data = results.data;
+            fillTable(data);
+            updateCharts(data);
+        }
+    });
+});
 
 // Load CSV with cleaned data
 Papa.parse("data/assets.csv", {
