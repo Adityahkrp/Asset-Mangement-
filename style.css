@@ -1,9 +1,20 @@
-body {
-    font-family: Arial, sans-serif;
+body.bg-dark {
+    background-color: #1e1e1e !important;
+    color: white !important;
 }
-h1 {
-    font-weight: bold;
+
+.bg-dark table {
+    color: white;
 }
-table {
+
+.bg-dark .table-dark {
+    background-color: #333 !important;
+}
+
+.card {
+    border-radius: 8px;
+}
+
+.table {
     font-size: 14px;
 }
