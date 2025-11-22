@@ -1,21 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Asset Management Dashboard</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<meta charset="UTF-8">
+<title>Asset Management Dashboard</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="assets/style.css">
 </head>
-<body>
-  <h1>Asset Management Dashboard</h1>
 
-  <input type="file" id="csvFile" accept=".csv">
-  <br><br>
-  <table id="dashboard" border="1">
-    <thead id="table-head"></thead>
-    <tbody id="table-body"></tbody>
-  </table>
+<body class="bg-light">
 
-  <script src="script.js"></script>
+<div class="container py-4">
+    <h1 class="text-center mb-4">Asset Management Dashboard</h1>
+
+    <!-- Filters -->
+    <div class="row mb-3">
+        <div class="col-md-3">
+            <select id="statusFilter" class="form-select">
+                <option value="">All Status</option>
+                <option>Installed</option>
+                <option>Spare</option>
+                <option>Planned</option>
+                <option>Available</option>
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <select id="circleFilter" class="form-select">
+                <option value="">All Circles</option>
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <input id="searchBox" type="text" class="form-control" placeholder="Search Asset ID / Substation / Person">
+        </div>
+    </div>
+
+    <!-- Data Table -->
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped" id="assetTable">
+            <thead class="table-dark">
+                <tr>
+                    <th>Date</th>
+                    <th>Asset ID</th>
+                    <th>Material Type</th>
+                    <th>Model/Variant</th>
+                    <th>NOS</th>
+                    <th>Circle</th>
+                    <th>Division</th>
+                    <th>Substation</th>
+                    <th>Status</th>
+                    <th>Assigned To</th>
+                    <th>Planned Date</th>
+                    <th>Replacement Date</th>
+                    <th>Remarks</th>
+                    <th>Updated By</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+<script src="assets/script.js"></script>
 </body>
 </html>
