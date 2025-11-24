@@ -1,1 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+</head>
+
+<body id="body">
+
+<div id="sidebar"></div>
+<div id="topbar"></div>
+
+<div class="content">
+    <h2>Dashboard</h2>
+
+    <div class="row">
+        <canvas id="statusChart"></canvas>
+        <canvas id="circleChart"></canvas>
+    </div>
+
+    <table class="table" id="assetTable">
+        <thead>
+            <tr>
+                <th>DATE</th>
+                <th>Asset_ID</th>
+                <th>Material_Type</th>
+                <th>Model_Variant</th>
+                <th>NOS</th>
+                <th>Circle</th>
+                <th>Division</th>
+                <th>Substation</th>
+                <th>Status</th>
+                <th>Assigned_To</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+<script src="../assets/js/main.js"></script>
+<script src="../assets/js/dashboard.js"></script>
+<script src="../assets/js/theme.js"></script>
+
+</body>
+</html>
 
