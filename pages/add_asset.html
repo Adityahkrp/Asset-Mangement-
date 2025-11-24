@@ -1,27 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Add Asset</title>
     <link rel="stylesheet" href="../assets/css/style.css">
 </head>
-
-<body id="body">
+<body class="bg-dark">
 
 <div id="sidebar"></div>
 <div id="topbar"></div>
 
-<div class="content">
-    <h2>Add Asset</h2>
+<main class="content">
+    <h2>Add New Asset</h2>
 
-    <form id="entryForm">
-        <!-- form fields here -->
+    <form id="assetForm">
+        <label>Asset Type:</label>
+        <input type="text" id="assetType" required>
+
+        <label>Serial Number:</label>
+        <input type="text" id="serialNumber" required>
+
+        <button type="submit">Save</button>
     </form>
-</div>
+
+</main>
 
 <script src="../assets/js/main.js"></script>
 <script src="../assets/js/add_asset.js"></script>
-<script src="../assets/js/theme.js"></script>
-
 </body>
 </html>
-
