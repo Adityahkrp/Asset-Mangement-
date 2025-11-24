@@ -1,20 +1,65 @@
+/* ----- DARK MODE BODY ----- */
 body.bg-dark {
     background-color: #1e1e1e !important;
-    color: white !important;
+    color: #eaeaea !important;
 }
 
+/* ----- TABLE IN DARK MODE ----- */
 .bg-dark table {
-    color: white;
+    color: #eaeaea !important;
 }
 
-.bg-dark .table-dark {
-    background-color: #333 !important;
+.bg-dark .table {
+    background-color: #2b2b2b !important;
 }
 
+.bg-dark .table thead th {
+    background-color: #3a3a3a !important;
+    color: #fff !important;
+}
+
+.bg-dark .table tbody tr:nth-child(even) {
+    background-color: #2a2a2a !important;
+}
+
+.bg-dark .table tbody tr:hover {
+    background-color: #444 !important;
+}
+
+/* ----- CARD FIXES ----- */
 .card {
     border-radius: 8px;
+    background-color: #ffffff; /* default light mode */
 }
 
+.bg-dark .card {
+    background-color: #292929 !important;
+    border: 1px solid #444;
+    color: #eaeaea;
+}
+
+/* ----- TABLE FONT SIZE ----- */
 .table {
     font-size: 14px;
+}
+
+/* ----- BUTTON FIX FOR DARK MODE ----- */
+.bg-dark .btn-primary {
+    background-color: #0d6efd !important;
+    border-color: #0b5ed7 !important;
+}
+
+.bg-dark .btn-danger {
+    background-color: #dc3545 !important;
+}
+
+.bg-dark .btn-success {
+    background-color: #198754 !important;
+}
+
+/* ----- SELECT DROPDOWN FIX ----- */
+.bg-dark select.form-select {
+    background-color: #2b2b2b;
+    color: white;
+    border: 1px solid #555;
 }
